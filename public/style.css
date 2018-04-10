@@ -6,8 +6,26 @@
     background-color: mediumturquoise;
 }
 
-.container {
-    //position: relative;
+html, body
+{
+    height:100%;
 }
+
+.row {
+    height:100%;
+    position:relative;
+}
+
+.container {
+    height:100%;
+}
+
+.bottom-align-text {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+
 
 
