@@ -26,19 +26,10 @@ html, body
     right: 0;
 }
 
-.pre-scrollable{
-    //height: 50%;
-}
-
-.myScroll {
-    height: 70%;
-    overflow-y:auto;
-}
-
-ul {
+.scrollList {
     position: absolute;
     top: 20px;
-    bottom: 20px;
+    bottom: 50px;
     left: 20px;
     right: 20px;
     overflow: auto;
@@ -53,8 +44,6 @@ ul {
     // Again, this is where the magic happens
     -webkit-overflow-scrolling: touch;
 }
-
-
 
 
 
