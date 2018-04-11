@@ -1,24 +1,23 @@
 
 $(function()
 {
-    //filterUserList();
+
 })
 
 function filterUserList()
 {
-    // https://www.w3schools.com/howto/howto_js_filter_lists.asp FILTER LIST TUTORIAL
-
-    //wrong code
     var input, filter, ul, li, a, i;
-    input = $('#inputSearchUser');
-    filter = input.val().toUpperCase();
-    ul = $('.pseudoUl');
-    li = $('.pseudoLi');
+    input = document.getElementById('inputSearchUser');
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("userList");
+    li = ul.getElementsByTagName('a');
+    
     for (i = 0; i < li.length; i++) {
-        a = li[i].getElementsByTagName("a")[0];
-        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        a = li[i].innerHTML;
+        if(a.toUpperCase().indexOf(filter) > -1)
+        {
             li[i].style.display = "";
-        } else {
+        }else{
             li[i].style.display = "none";
         }
     }
