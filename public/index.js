@@ -1,8 +1,20 @@
 
 $(function()
 {
-    
+    listGroup_listenedEvents();
 })
+
+
+function listGroup_listenedEvents()
+{
+    //hint : https://getbootstrap.com/docs/4.0/components/list-group/
+
+    
+    //$('a[data-name="home"]').on('shown.bs.tab', function (e) {
+    $('div.list-group > a[role="tab"]').on('shown.bs.tab', function (e) {
+        updateScrollToBottom();
+    });
+}
 
 function appendMsg()
 {
@@ -12,15 +24,23 @@ function appendMsg()
 
 function updateScrollToBottom()
 {
-    $( document ).ready(function() {
-        console.log( "ready!" );
-    });
-    //console.log("a");
     $('#divMessagesBox').scrollTop(99999999999);
+    // hint : scroll start from bottom
+
+    //console.log("a");
+    // setTimeout(function(){
+    //     $("#divMessagesBox").animate({ scrollTop: $(".tab-pane.active")[0].scrollHeight}, 1000);
+    // }, 1000)
+
+    /* setTimeout(function(){
+        $('#divMessagesBox').scrollTop(99999999999);
+    }, 1000) */
 }
 
 function filterUserList()
 {
+    // $(".list-group .list-group-item[data-name='profile']") << improvement
+
     // VARS UL AND LI AREN'T REAL "UL" and "LI", they are "DIV";
     var input, filter, ul, li, userLink, i;
     input = document.getElementById('inputSearchUser');
