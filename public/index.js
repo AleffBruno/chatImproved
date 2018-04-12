@@ -1,28 +1,40 @@
 
 $(function()
 {
-    listGroup_listenedEvents();
+    updateScrollToBottom_a();
+    
+    listGroup_listenedEvents_p();
+    sendMessage_p();
 })
 
-
-function listGroup_listenedEvents()
+function sendMessage_p()
 {
-    //hint : https://getbootstrap.com/docs/4.0/components/list-group/
-
-    
-    //$('a[data-name="home"]').on('shown.bs.tab', function (e) {
-    $('div.list-group > a[role="tab"]').on('shown.bs.tab', function (e) {
-        updateScrollToBottom();
+    $('.formSendMsg').submit(function(){
+        var msg = $('#inputWriteMessage').val();
+        appendMsg_a(msg);
+        //do something with the message
+        $('#inputWriteMessage').val('');
+        return false;
     });
 }
 
-function appendMsg()
+function listGroup_listenedEvents_p()
 {
-    $('#divMessagesBox > div.tab-content > div.active').append("<p> newMsg </p>");
-    updateScrollToBottom();
+    //hint : https://getbootstrap.com/docs/4.0/components/list-group/
+
+    //$('a[data-name="home"]').on('shown.bs.tab', function (e) {
+    $('div.list-group > a[role="tab"]').on('shown.bs.tab', function (e) {
+        updateScrollToBottom_a();
+    });
 }
 
-function updateScrollToBottom()
+function appendMsg_a(msg)
+{
+    $('#divMessagesBox > div.tab-content > div.active').append("<p>"+ msg +"</p>");
+    updateScrollToBottom_a();
+}
+
+function updateScrollToBottom_a()
 {
     $('#divMessagesBox').scrollTop(99999999999);
     // hint : scroll start from bottom
@@ -37,7 +49,7 @@ function updateScrollToBottom()
     }, 1000) */
 }
 
-function filterUserList()
+function filterUserList_html()
 {
     // $(".list-group .list-group-item[data-name='profile']") << improvement
 
