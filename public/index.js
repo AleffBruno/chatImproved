@@ -1,7 +1,7 @@
 
 $(function()
 {
-    
+
 })
 
 function appendMsg()
@@ -12,9 +12,8 @@ function appendMsg()
 
 function updateScrollToBottom()
 {
-    $( document ).ready(function() {
-        console.log( "ready!" );
-    });
+    //HINT : https://api.jquery.com/change/ or css scroll aways on final
+    //var elmnt = document.getElementById("divMessagesBox").scrollTop = 99999999999999;
     //console.log("a");
     $('#divMessagesBox').scrollTop(99999999999);
 }
