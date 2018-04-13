@@ -38,23 +38,36 @@ function updateScrollToBottom_a()
 {
     $('#divMessagesBox').scrollTop(99999999999);
     // hint : scroll start from bottom
+}
 
-    //console.log("a");
-    // setTimeout(function(){
-    //     $("#divMessagesBox").animate({ scrollTop: $(".tab-pane.active")[0].scrollHeight}, 1000);
-    // }, 1000)
+function linksAsJson()
+{
+    var object = '{"indexes":["home","profile"]}';
+    var objectAsArray = JSON.parse(object);
+    var arrayElements = [];
+    for(var i = 0;i<objectAsArray.indexes.length;i++)
+    {
+        var currentIndex = objectAsArray.indexes[i].toLowerCase();
+        arrayElements.push( '<a class="pseudoLi list-group-item list-group-item-action" id="list-'+currentIndex+'-list" data-toggle="list" href="#list-'+currentIndex+'" role="tab" aria-controls="'+currentIndex+'" data-name="'+currentIndex+'">'+currentIndex+'</a>');
+    }
 
-    /* setTimeout(function(){
-        $('#divMessagesBox').scrollTop(99999999999);
-    }, 1000) */
+    $('#userList').html(
+        arrayElements.join("")
+    );
 }
 
 function filterUserList_html()
 {
+    var input, filter,ul,li,userLink,i;
+    input = $('#inputSearchUser');
+    fitler = input.val().toUpperCase();
+    ul = $('#userList');
+    li = $('#userList > a');
+
     // $(".list-group .list-group-item[data-name='profile']") << improvement
 
     // VARS UL AND LI AREN'T REAL "UL" and "LI", they are "DIV";
-    var input, filter, ul, li, userLink, i;
+    /* var input, filter, ul, li, userLink, i;
     input = document.getElementById('inputSearchUser');
     filter = input.value.toUpperCase();
     ul = document.getElementById("userList");
@@ -68,5 +81,5 @@ function filterUserList_html()
         }else{
             li[i].style.display = "none";
         }
-    }
+    } */
 }
