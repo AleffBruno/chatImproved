@@ -1,11 +1,19 @@
 
 $(function()
 {
+    
+
     updateScrollToBottom_a();
     
     listGroup_listenedEvents_p();
     sendMessage_p();
+    socket_p();
 })
+
+function socket_p()
+{
+    var socket = io();
+}
 
 function sendMessage_p()
 {
