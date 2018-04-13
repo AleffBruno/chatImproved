@@ -40,7 +40,7 @@ function updateScrollToBottom_a()
     // hint : scroll start from bottom
 }
 
-function linksAsJson()
+function linksAsJson() //pending improvement
 {
     var object = '{"indexes":["home","profile"]}';
     var objectAsArray = JSON.parse(object);
