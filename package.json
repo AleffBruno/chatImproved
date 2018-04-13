@@ -1,0 +1,30 @@
+{
+  "name": "simple_chat",
+  "version": "1.0.0",
+  "description": "this is a simple project only to learn about socket",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.15.2",
+    "socket.io": "^2.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AleffBruno/chatImproved.git"
+  },
+  "keywords": [
+    "socketio",
+    "chat",
+    "node",
+    "bootstrap"
+  ],
+  "author": "Aleff Bruno",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AleffBruno/chatImproved/issues"
+  },
+  "homepage": "https://github.com/AleffBruno/chatImproved#readme"
+}
