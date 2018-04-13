@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="description" content="[yourDescriptionHere]"/>
     <meta name="author" content="[yourNameHere]"/>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="../public/style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-    <script src="./index.js"></script>
+    <script src= "../public/index.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 
     <title>Page Title</title>
 </head>
@@ -20,21 +21,24 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3 cor1">
-                <div class="list-group scrollList pseudoUl" id="userList" role="tablist">
-                    <a onclick="updateScrollToBottom()" class="pseudoLi list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
-                    <a class="pseudoLi list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Profile</a>
-                    <a class="pseudoLi list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Messages</a>
-                    <a class="pseudoLi list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings</a>
+                <div class="list-group scrollList scrollList_usersOnline pseudoUl" id="userList" role="tablist">
+                    <a class="pseudoLi list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-global" role="tab" aria-controls="global" data-name="global">Global</a>
+                    <a class="pseudoLi list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home" data-name="home">Home</a>
+                    <a class="pseudoLi list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile" data-name="profile">Profile</a>
+                    <a class="pseudoLi list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages" data-name="messages">Messages</a>
+                    <a class="pseudoLi list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings" data-name="settings">Settings</a>
                 </div>
                 <div class="bottom-align-text container-fluid">
-                  <input id="inputSearchUser" onkeyup="filterUserList()" type="text" class="form-control" placeholder="Procure Alguem">
+                  <input id="inputSearchUser" onkeyup="filterUserList_html()" type="text" class="form-control" placeholder="Procure Alguem">
                 </div>
             </div>
             <div class="col-md-9 cor2">
                 <div id="divMessagesBox" class="cor3 scrollList">
                     <div class="tab-content container" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-                            <p>1</p>
+                        <div class="tab-pane fade show active" id="list-global" role="tabpanel" aria-labelledby="list-global-list">
+                            <p>Global</p>
+                        </div>
+                        <div class="tab-pane fade" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
                             <p>1</p>
                             <p>1</p>
                             <p>1</p>
@@ -51,7 +55,7 @@
                             <p>1</p>
                         </div>
                         <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
-                            2
+                            <p>2</p>
                         </div>
                         <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
                             3
@@ -62,7 +66,16 @@
                     </div>
                 </div>
                 <div class="bottom-align-text container-fluid">
-                    <input id="inputWriteMessage" type="text" class="form-control" placeholder="Digite sua mensagem">
+                    <form action="" class="formSendMsg">
+                        <div class="form-row">
+                            <div class="col-md-11">
+                                <input class="form-control" id="inputWriteMessage" type="text" placeholder="Digite sua mensagem">
+                            </div>
+                            <div class="col-md-1">
+                                <input class="form-control" type="submit" value="Go">
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
