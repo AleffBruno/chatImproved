@@ -25,6 +25,10 @@ io.on('connection',function(socket){
         socket.broadcast.emit('newUserConnected',nicknameUserConnected);
     });
 
+    socket.on('someoneTyping',function(nicknameWhoIsTyping){
+        socket.broadcast.emit('someoneTyping',nicknameWhoIsTyping);
+    });
+
     socket.on('disconnect', function(){
         
     });
