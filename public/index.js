@@ -1,27 +1,49 @@
+var socket;
+var nickname;
 
 $(function()
 {
-    updateScrollToBottom_a();
-    
+    socket_p();
     listGroup_listenedEvents_p();
     sendMessage_p();
-    socket_p();
+
+    modalBehaviour_p();
+    updateScrollToBottom_a();
 })
 
 function socket_p()
 {
-    var socket = io();
+    socket = io();
+
+    socket.on('connect', function () {
+        // do something if necessary
+    });
+
+    socket.on('sendMsgApp',function(payload){
+        if(payload.to != nickname)
+        {
+            var content = payload.to+": "+payload.msg;
+            appendMsg_a(content);
+        }
+    })
+
+    socket.on('newUserConnected',function(nicknameUserConnected){
+        msg = nicknameUserConnected+" connected!"
+        appendMsg_a(msg);
+    });
 }
 
 function sendMessage_p()
 {
     //HINT : https://api.jquery.com/change/ or css scroll aways on final
     //var elmnt = document.getElementById("divMessagesBox").scrollTop = 99999999999999;
-    //console.log("a");
     $('.formSendMsg').submit(function(){
         var msg = $('#inputWriteMessage').val();
-        appendMsg_a(msg);
-        //do something with the message
+        //appendMsg_a(msg);
+        var payload = {"to":nickname,"from":"global","msg":msg};
+        content = payload.to+": "+payload.msg;
+        appendMsg_a(content);
+        socket.emit('sendMsgJS',payload);
         $('#inputWriteMessage').val('');
         return false;
     });
@@ -91,4 +113,14 @@ function filterUserList_html()
             li[i].style.display = "none";
         }
     } */
+}
+
+function modalBehaviour_p()
+{
+    $('#myModal').modal();
+
+    $('#btnModalNickname').click(function(){
+        nickname = $('#nickname').val();
+        socket.emit('newUserConnected',nickname);
+    })
 }

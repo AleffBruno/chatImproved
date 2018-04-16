@@ -15,10 +15,19 @@ app.get('/public/index.js',function(req,res){
 });
 
 io.on('connection',function(socket){
-    console.log("a user connected");
+
+    socket.on('sendMsgJS',function(payload){
+        //callback("SUCCESS");
+        io.emit('sendMsgApp',payload);
+    });
+
+    socket.on('newUserConnected',function(nicknameUserConnected){
+        socket.broadcast.emit('newUserConnected',nicknameUserConnected);
+    });
+
     socket.on('disconnect', function(){
-        console.log('user disconnected');
-      });
+        
+    });
 });
 
 
