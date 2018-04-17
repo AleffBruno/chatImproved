@@ -1,29 +1,11 @@
 var socket;
 var nickname;
+var searchTimeout; 
+var maxTimeOutIsTyping = 4500;
+var usersWhoAreTyping = [];
 
 $(function()
 {
-    var searchTimeout;
-        document.getElementById('inputWriteMessage').onkeypress = function () {
-            if($('#divMessagesBox > div.tab-content > div.active > p[data-name=COISA]').length)
-            {
-                $('#divMessagesBox > div.tab-content > div.active > p[data-name=COISA]').html('CONSEGUI');
-            }else{
-                $('#divMessagesBox > div.tab-content > div.active').append('<p data-name="NADA"></p>');
-                $('#divMessagesBox > div.tab-content > div.active > p[data-name=NADA]').attr("data-name","COISA");
-                $('#divMessagesBox > div.tab-content > div.active > p[data-name=COISA]').html('CONSEGUI');
-                //console.log("n existe");
-            }
-
-            if (searchTimeout != undefined) clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(callServerScript, 2000);
-        };
-        function callServerScript() {
-            $('#divMessagesBox > div.tab-content > div.active > p[data-name='+"COISA"+']').remove();
-        }
-
-
-
     socket_p();
     listGroup_listenedEvents_p();
     sendMessage_p();
@@ -55,44 +37,30 @@ function socket_p()
     });
 
     socket.on('someoneTyping',function(nicknameWhoIsTyping){
-        var dataTimeNow = new Date($.now());
+        /* var dataTimeNow = new Date($.now());
         var randomNumber = Math.random();
-        var randomid = dataTimeNow+randomNumber;
-
-
-        var searchTimeout;
-        document.getElementById('inputWriteMessage').onkeypress = function () {
-            if($('#divMessagesBox > div.tab-content > div.active > p[data-name=COISA]').length)
-            {
-                $('#divMessagesBox > div.tab-content > div.active > p[data-name=COISA]').html('CONSEGUI');
-            }else{
-                $('#divMessagesBox > div.tab-content > div.active').append('<p data-name="NADA"></p>');
-                $('#divMessagesBox > div.tab-content > div.active > p[data-name=NADA]').attr("data-name","COISA");
-                $('#divMessagesBox > div.tab-content > div.active > p[data-name=COISA]').html('CONSEGUI');
-                //console.log("n existe");
-            }
-
-            if (searchTimeout != undefined) clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(callServerScript, 250);
-        };
-        function callServerScript() {
-            $('#divMessagesBox > div.tab-content > div.active > p[data-name=COISA]').remove();
-        }
-
-        //if($('#divMessagesBox > div.tab-content > div.active > p[data-name=NADA]').length)
-        if($('#divMessagesBox > div.tab-content > div.active > p[data-name=COISA]').length)
+        var randomid = dataTimeNow+randomNumber; */
+        if(usersWhoAreTyping.indexOf(nicknameWhoIsTyping) == -1)
         {
-            $('#divMessagesBox > div.tab-content > div.active > p[data-name=COISA]').html('CONSEGUI');
+            usersWhoAreTyping.push(nicknameWhoIsTyping);
+        }
+        console.log(usersWhoAreTyping);
+        
+
+        if($('#divMessagesBox > div.tab-content > div.active > p[data-name='+nicknameWhoIsTyping+']').length)
+        {
+            $('#divMessagesBox > div.tab-content > div.active > p[data-name='+nicknameWhoIsTyping+']').html(nicknameWhoIsTyping+" is typing...");
         }else{
-            $('#divMessagesBox > div.tab-content > div.active').append('<p data-name="NADA"></p>');
-            $('#divMessagesBox > div.tab-content > div.active > p[data-name=NADA]').attr("data-name","COISA");
-            $('#divMessagesBox > div.tab-content > div.active > p[data-name=COISA]').html('CONSEGUI');
-            //console.log("n existe");
+            $('#divMessagesBox > div.tab-content > div.active').append('<p data-name="'+nicknameWhoIsTyping+'">'+nicknameWhoIsTyping+" is typing..."+'</p>');
         }
 
+        if (searchTimeout != undefined) clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(callServerScript, maxTimeOutIsTyping);
 
-        $('#divMessagesBox > div.tab-content > div.active').append("<p>"+ nicknameWhoIsTyping +" is typing..."+"</p>");
-        updateScrollToBottom_a();
+        function callServerScript() {
+            $('#divMessagesBox > div.tab-content > div.active > p[data-name='+nicknameWhoIsTyping+']').remove();
+        }
+        
     });
 }
 
@@ -136,7 +104,7 @@ function listGroup_listenedEvents_p()
 
 function isTyping_p()
 {
-    $('#inputWriteMessage').keyup(function(){
+    $('#inputWriteMessage').keypress(function(){
         socket.emit('someoneTyping',nickname);
     });
 }
