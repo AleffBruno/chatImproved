@@ -1,0 +1,5 @@
+filter users by json ( function filterUserList_html );
+
+app.js (save "session" on socket)
+
+fix users with repeated names
