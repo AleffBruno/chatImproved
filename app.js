@@ -29,6 +29,10 @@ io.on('connection',function(socket){
         socket.broadcast.emit('someoneTyping',nicknameWhoIsTyping);
     });
 
+    socket.on('someoneStopTyping',function(nicknameWhoStopTyping){
+        socket.broadcast.emit('someoneStopTyping',nicknameWhoStopTyping);
+    });
+
     socket.on('disconnect', function(){
         
     });

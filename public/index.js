@@ -1,7 +1,7 @@
 var socket;
 var nickname;
 var searchTimeout; 
-var maxTimeOutIsTyping = 4500;
+var maxTimeOutIsTyping = 5500;
 var usersWhoAreTyping = [];
 
 $(function()
@@ -44,9 +44,8 @@ function socket_p()
         {
             usersWhoAreTyping.push(nicknameWhoIsTyping);
         }
-        console.log(usersWhoAreTyping);
+        //console.log(usersWhoAreTyping);
         
-
         if($('#divMessagesBox > div.tab-content > div.active > p[data-name='+nicknameWhoIsTyping+']').length)
         {
             $('#divMessagesBox > div.tab-content > div.active > p[data-name='+nicknameWhoIsTyping+']').html(nicknameWhoIsTyping+" is typing...");
@@ -54,13 +53,17 @@ function socket_p()
             $('#divMessagesBox > div.tab-content > div.active').append('<p data-name="'+nicknameWhoIsTyping+'">'+nicknameWhoIsTyping+" is typing..."+'</p>');
         }
 
-        if (searchTimeout != undefined) clearTimeout(searchTimeout);
+        /* if (searchTimeout != undefined) clearTimeout(searchTimeout);
         searchTimeout = setTimeout(callServerScript, maxTimeOutIsTyping);
 
         function callServerScript() {
             $('#divMessagesBox > div.tab-content > div.active > p[data-name='+nicknameWhoIsTyping+']').remove();
-        }
+        } */
         
+    });
+
+    socket.on('someoneStopTyping',function(nicknameWhoStopTyping){
+        $('#divMessagesBox > div.tab-content > div.active > p[data-name='+nicknameWhoStopTyping+']').remove();
     });
 }
 
@@ -106,6 +109,15 @@ function isTyping_p()
 {
     $('#inputWriteMessage').keypress(function(){
         socket.emit('someoneTyping',nickname);
+
+
+        if (searchTimeout != undefined) clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(callServerScript, maxTimeOutIsTyping);
+
+        function callServerScript() {
+            socket.emit('someoneStopTyping',nickname);
+        }
+
     });
 }
 
