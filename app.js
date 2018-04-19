@@ -23,29 +23,32 @@ io.on('connection',function(socket){
         io.emit('sendMsgApp',payload);
     });
 
+    socket.on('showMeWhoAreOnline',function(callback){
+        callback(connectedUsers);
+    });
+
     socket.on('newUserConnected',function(nicknameUserConnected){
 
         socket.broadcast.emit('newUserConnected',nicknameUserConnected);
-
 
         if(connectedUsers.indexOf(nicknameUserConnected) == -1)
         {
             connectedUsers.push(nicknameUserConnected);
         }
 
-        socket.emit('connedtedUsers',connectedUsers);
+        //socket.emit('connedtedUsers',connectedUsers);
         
     });
 
-    socket_v.on('anUserDisconnect',function(userWhoDisconnect){
-        for (var i=usersOnline.length-1; i>=0; i--) 
+    socket.on('anUserDisconnect',function(userWhoDisconnect){
+        for (var i=connectedUsers.length-1; i>=0; i--) 
         {
-            if (usersOnline[i] === userWhoDisconnect) {
-                usersOnline.splice(i, 1);
+            if (connectedUsers[i] === userWhoDisconnect) {
+                connectedUsers.splice(i, 1);
             }
         }
 
-        socket_v.broadcast.emit('notifierUsersWhoOnline',usersOnline);
+        socket.broadcast.emit('notifierUsersWhoOnline',connectedUsers);
     });
 
 

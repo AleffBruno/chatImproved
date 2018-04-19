@@ -1,7 +1,7 @@
 var socket;
 var nickname;
 var timeOutIsTypingBehaviour; 
-var maxTimeOutIsTyping = 5500;
+var maxTimeOutIsTyping = 300;
 var connectedUsers = [];
 
 $(function()
@@ -25,6 +25,9 @@ function socket_p()
 
     socket.on('connect', function () {
         // do something if necessary
+        socket.emit('showMeWhoAreOnline',function(yieldAppCallback){
+            addNewUserToListGroup(yieldAppCallback);
+        });
     });
 
     socket.on('sendMsgApp',function(payload){
@@ -38,6 +41,7 @@ function socket_p()
     socket.on('newUserConnected',function(nicknameUserConnected){
         msg = nicknameUserConnected+" connected!"
         appendMsg_a(msg);
+        addNewUserToListGroup([nicknameUserConnected]);
     });
 
     socket.on('someoneTyping',function(nicknameWhoIsTyping){
@@ -64,12 +68,16 @@ function socket_p()
     socket.on('someoneStopTyping',function(nicknameWhoStopTyping){
         $('#divMessagesBox > div.tab-content > div.active > p[data-name='+nicknameWhoStopTyping+']').remove();
     });
+
+
+    socket.on('connedtedUsers',function(connedtedUsers){
+        console.log(connedtedUsers);
+    });
 }
 
 function sendMessage_p()
 {
     //HINT : https://api.jquery.com/change/ or css scroll aways on final
-    //var elmnt = document.getElementById("divMessagesBox").scrollTop = 99999999999999;
     $('.formSendMsg').submit(function(){
         var msg = $('#inputWriteMessage').val();
         //appendMsg_a(msg);
@@ -82,15 +90,17 @@ function sendMessage_p()
     });
 }
 
-function addNewUserToListGroup(userToAddOnUserList)
+function addNewUserToListGroup(userToAddOnUserList_array)
 {
-    $('#userList').append(
-        '<a class="pseudoLi list-group-item list-group-item-action" id="list-'+userToAddOnUserList+'-list" data-toggle="list" href="#list-'+userToAddOnUserList+'" role="tab" aria-controls="'+userToAddOnUserList+'" data-name="'+userToAddOnUserList+'">'+userToAddOnUserList+'</a>'
-    );
-
-    $('#nav-tabContent').append(
-        '<div class="tab-pane fade" id="list-'+userToAddOnUserList+'" role="tabpanel" aria-labelledby="list-'+userToAddOnUserList+'-list"></div>'
-    );
+    userToAddOnUserList_array.forEach(function(userToAddOnUserList,index){
+        $('#userList').append(
+            '<a class="pseudoLi list-group-item list-group-item-action" id="list-'+userToAddOnUserList+'-list" data-toggle="list" href="#list-'+userToAddOnUserList+'" role="tab" aria-controls="'+userToAddOnUserList+'" data-name="'+userToAddOnUserList+'">'+userToAddOnUserList+'</a>'
+        );
+    
+        $('#nav-tabContent').append(
+            '<div class="tab-pane fade" id="list-'+userToAddOnUserList+'" role="tabpanel" aria-labelledby="list-'+userToAddOnUserList+'-list"></div>'
+        );
+    });
 
 }
 
