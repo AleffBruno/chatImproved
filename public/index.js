@@ -1,11 +1,15 @@
 var socket;
 var nickname;
-var searchTimeout; 
+var timeOutIsTypingBehaviour; 
 var maxTimeOutIsTyping = 5500;
-var usersWhoAreTyping = [];
+var connectedUsers = [];
 
 $(function()
 {
+    $(window).bind('beforeunload', function(){
+        socket.emit('anUserDisconnect',nickname);
+    });
+
     socket_p();
     listGroup_listenedEvents_p();
     sendMessage_p();
@@ -40,11 +44,6 @@ function socket_p()
         /* var dataTimeNow = new Date($.now());
         var randomNumber = Math.random();
         var randomid = dataTimeNow+randomNumber; */
-        if(usersWhoAreTyping.indexOf(nicknameWhoIsTyping) == -1)
-        {
-            usersWhoAreTyping.push(nicknameWhoIsTyping);
-        }
-        //console.log(usersWhoAreTyping);
         
         if($('#divMessagesBox > div.tab-content > div.active > p[data-name='+nicknameWhoIsTyping+']').length)
         {
@@ -111,8 +110,8 @@ function isTyping_p()
         socket.emit('someoneTyping',nickname);
 
 
-        if (searchTimeout != undefined) clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(callServerScript, maxTimeOutIsTyping);
+        if (timeOutIsTypingBehaviour != undefined) clearTimeout(timeOutIsTypingBehaviour);
+        timeOutIsTypingBehaviour = setTimeout(callServerScript, maxTimeOutIsTyping);
 
         function callServerScript() {
             socket.emit('someoneStopTyping',nickname);
