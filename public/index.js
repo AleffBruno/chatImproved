@@ -31,16 +31,17 @@ function socket_p()
     });
 
     socket.on('sendMsgApp',function(payload){
-        if(payload.to != nickname)
+        if(payload.from != nickname)
         {
-            var content = payload.to+": "+payload.msg;
-            appendMsg_a(content);
+            var content = payload.from+": "+payload.msg;
+            appendMsg_a(payload.from,payload.to,content);
         }
     })
 
     socket.on('newUserConnected',function(nicknameUserConnected){
         msg = nicknameUserConnected+" connected!"
-        appendMsg_a(msg);
+        appendMsgToGlobalNewUserConnected(nicknameUserConnected);
+        //appendMsg_a(null,'global',msg);
         addNewUserToListGroup([nicknameUserConnected]);
     });
 
@@ -70,9 +71,6 @@ function socket_p()
     });
 
 
-    socket.on('connedtedUsers',function(connedtedUsers){
-        console.log(connedtedUsers);
-    });
 }
 
 function sendMessage_p()
@@ -80,10 +78,14 @@ function sendMessage_p()
     //HINT : https://api.jquery.com/change/ or css scroll aways on final
     $('.formSendMsg').submit(function(){
         var msg = $('#inputWriteMessage').val();
-        //appendMsg_a(msg);
-        var payload = {"to":nickname,"from":"global","msg":msg};
-        content = payload.to+": "+payload.msg;
-        appendMsg_a(content);
+        var from = nickname;
+        var to = $('#userList > a.active').html().toLowerCase();
+        var payload = {"from":nickname,"to":to,"msg":msg};
+        userSelfMsg = payload.from+": "+payload.msg;
+
+        appendMsgToMyself(userSelfMsg);
+        //appendMsg_a('global',null,userSelfMsg);
+
         socket.emit('sendMsgJS',payload);
         $('#inputWriteMessage').val('');
         return false;
@@ -93,6 +95,7 @@ function sendMessage_p()
 function addNewUserToListGroup(userToAddOnUserList_array)
 {
     userToAddOnUserList_array.forEach(function(userToAddOnUserList,index){
+        userToAddOnUserList = userToAddOnUserList.toLowerCase();
         $('#userList').append(
             '<a class="pseudoLi list-group-item list-group-item-action" id="list-'+userToAddOnUserList+'-list" data-toggle="list" href="#list-'+userToAddOnUserList+'" role="tab" aria-controls="'+userToAddOnUserList+'" data-name="'+userToAddOnUserList+'">'+userToAddOnUserList+'</a>'
         );
@@ -130,9 +133,29 @@ function isTyping_p()
     });
 }
 
-function appendMsg_a(msg)
+function appendMsg_a(from,to,msg)
+{
+    if(to == nickname)
+    {
+        $('#divMessagesBox > div.tab-content > div#list-'+from).append("<p>"+ msg +"</p>");
+    }
+    if(to == "global")
+    {
+        $('#divMessagesBox > div.tab-content > div#list-global').append("<p>"+ msg +"</p>");
+    }
+
+    updateScrollToBottom_a();
+}
+
+function appendMsgToMyself(msg)
 {
     $('#divMessagesBox > div.tab-content > div.active').append("<p>"+ msg +"</p>");
+    updateScrollToBottom_a();
+}
+
+function appendMsgToGlobalNewUserConnected(nickname)
+{
+    $('#divMessagesBox > div.tab-content > div#list-global').append("<p>"+ nickname +" connected !</p>");
     updateScrollToBottom_a();
 }
 
